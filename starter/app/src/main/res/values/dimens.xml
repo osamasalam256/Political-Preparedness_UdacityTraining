@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="default_padding">16dp</dimen>
+
+    <!-- TODO: Add necessary dimension values -->s
+    <dimen name="small_margin">4dp</dimen>
+    <dimen name="default_margin">8dp</dimen>
+    <dimen name="big_margin">16dp</dimen>
+
+    <!-- Image -->
+    <dimen name="photo_dimension">60dp</dimen>
+    <dimen name="social_media_icon">32dp</dimen>
+
+    <!-- Texts -->
+    <dimen name="big_text">22sp</dimen>
+
+</resources>

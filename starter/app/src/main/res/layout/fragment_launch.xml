@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.example.android.politicalpreparedness.MainActivity">
+
+        <!-- TODO: Add image for home screen logo. -->
+        <ImageView
+            android:id="@+id/election_logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ballot_logo"
+            app:layout_constraintBottom_toTopOf="@id/upcoming_button"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="@dimen/big_margin"
+            android:foregroundGravity="center"/>
+        <!-- Button to navigate to upcoming elections. -->
+        <Button
+            android:id="@+id/upcoming_button"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            app:layout_constraintBottom_toTopOf="@+id/representatives_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/upcoming_button"
+
+            style="@style/Button" />
+        <!-- Button to navigate to representatives. -->
+        <Button
+            android:id="@+id/representatives_button"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="@dimen/small_margin"
+            android:text="@string/representatives_button"
+            style="@style/Button"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
