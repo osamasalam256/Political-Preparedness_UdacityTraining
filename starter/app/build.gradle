@@ -7,6 +7,12 @@ plugins {
     id 'kotlin-parcelize'
 }
 
+// Load API keys from local.properties file
+def apiKeysPropertiesFile = rootProject.file("local.properties")
+def apiKeysProperties = new Properties()
+apiKeysProperties.load(new FileInputStream(apiKeysPropertiesFile))
+
+
 android {
     namespace 'com.example.android.politicalpreparedness'
     compileSdk 33
@@ -17,6 +23,9 @@ android {
         targetSdkVersion 33
         versionCode 1
         versionName "1.0"
+
+        // Access the API key through BuildConfig.API_KEY
+        buildConfigField("String", "API_KEY", "\"${apiKeysProperties['API_KEY']}\"")
     }
     buildTypes {
         release {

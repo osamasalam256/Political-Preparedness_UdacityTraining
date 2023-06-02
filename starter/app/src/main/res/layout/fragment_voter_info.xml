@@ -75,7 +75,6 @@
             android:gravity="center"
             style="@style/Button"/>
 
-
         <androidx.constraintlayout.widget.Group
             android:id="@+id/address_group"
             android:layout_width="wrap_content"
