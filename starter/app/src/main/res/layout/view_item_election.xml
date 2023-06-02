@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="electionModel"
+            type="com.example.android.politicalpreparedness.network.models.Election" />
+
+        <variable
+            name="clickListener"
+            type="com.example.android.politicalpreparedness.election.adapter.ElectionListener"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/big_margin"
+        android:paddingBottom="@dimen/default_margin"
+        android:onClick="@{()-> clickListener.onClick(electionModel)}">
+
+        <TextView
+            android:id="@+id/election_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{electionModel.name}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="@dimen/small_margin"
+            tools:text= "Test Election" />
+
+        <TextView
+            android:id="@+id/election_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_margin"
+            android:text="@{electionModel.electionDay.toString()}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/election_name"
+            android:layout_marginStart="@dimen/small_margin"
+            tools:text="Wed Jun 06 00:00:00"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
