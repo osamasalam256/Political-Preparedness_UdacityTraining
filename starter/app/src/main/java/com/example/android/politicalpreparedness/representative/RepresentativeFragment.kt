@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.example.android.politicalpreparedness.network.models.Address
 import java.util.Locale
 
+@Suppress("DEPRECATION")
 class DetailFragment : Fragment() {
 
     companion object {
@@ -56,9 +57,9 @@ class DetailFragment : Fragment() {
     }
 
     private fun geoCodeLocation(location: Location): Address {
-        val geocoder = Geocoder(context, Locale.getDefault())
+        val geocoder = Geocoder(requireContext(), Locale.getDefault())
         return geocoder.getFromLocation(location.latitude, location.longitude, 1)
-                .map { address ->
+                ?.map { address ->
                     Address(address.thoroughfare, address.subThoroughfare, address.locality, address.adminArea, address.postalCode)
                 }
                 .first()
