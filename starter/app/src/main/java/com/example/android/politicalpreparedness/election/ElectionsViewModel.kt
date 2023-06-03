@@ -1,5 +1,6 @@
 package com.example.android.politicalpreparedness.election
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,7 +15,7 @@ import java.util.ArrayList
 class ElectionsViewModel(dao: ElectionDao): ViewModel() {
 
     //live data val for upcoming elections
-    private val upcomingElections = MutableLiveData<List<Election>>()
+    val upcomingElections = MutableLiveData<List<Election>>()
     //live data val for saved elections
     val savedElections = dao.getAllElections()
     //set API services
@@ -37,6 +38,7 @@ class ElectionsViewModel(dao: ElectionDao): ViewModel() {
                 upcomingElections.value = electionList.elections
             } catch (e: Exception) {
                 upcomingElections.value = ArrayList()
+                Log.i("API serveice", "couldn't get network data")
             }
         }
     }
