@@ -15,18 +15,19 @@
         android:layout_height="match_parent"
         tools:context="com.example.android.politicalpreparedness.MainActivity">
 
-        <!-- TODO: Add title to toolbar -->
+        <!-- title to toolbar -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/election_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/default_padding"
             android:singleLine="true"
+            app:title="@{viewModel.election.name}"
             app:layout_constraintTop_toTopOf="parent"
             android:background="@color/colorPrimaryDark"
             app:titleTextColor="@color/white"/>
 
-        <!-- TODO: Add visual styling -->
+        <!-- Election Date -->
         <TextView
             android:id="@+id/election_date"
             android:layout_width="match_parent"
@@ -34,9 +35,10 @@
             android:layout_margin="@dimen/default_padding"
             app:layout_constraintTop_toBottomOf="@id/election_name"
             tools:text="@string/hint_Vote_Info_date"
+            android:text="@{viewModel.election.electionDay.toString()}"
             />
 
-        <!-- TODO: Add visual styling and content -->
+
         <TextView
             android:id="@+id/state_header"
             android:layout_width="wrap_content"
@@ -46,31 +48,28 @@
             app:layout_constraintStart_toStartOf="parent"
             style="@style/HeaderTxtView"/>
 
-        <!-- TODO: Add click binding to open web URL -->
-        <!--android:onClick="@{() -> viewModel.onVotingLocationClick()}"-->
+        <!-- binding to open web URL -->
         <TextView
             android:id="@+id/state_locations"
             android:layout_width="200dp"
             android:layout_height="30dp"
-
+            android:onClick="@{() -> viewModel.onVotingLocationClick()}"
             app:layout_constraintTop_toBottomOf="@id/state_header"
             app:layout_constraintStart_toStartOf="@id/election_date"
             android:text="@string/voting_locations"
             android:layout_marginTop="@dimen/big_margin"
             android:gravity="center"
             style="@style/Button"/>
-        <!-- TODO: Add visual styling and content -->
-        <!-- android:onClick="@{() -> viewModel.onBallotInformationClick()}"-->
-        <!-- TODO: Add click binding to open web URL -->
-        <!-- TODO: Add visual styling and content -->
+
+        <!-- binding to open web URL ballot locations-->
         <TextView
             android:id="@+id/state_ballot"
             android:layout_width="200dp"
             android:layout_height="30dp"
-
+            android:onClick="@{() -> viewModel.onBallotInformationClick()}"
             app:layout_constraintTop_toBottomOf="@id/state_locations"
             app:layout_constraintStart_toStartOf="@id/election_date"
-            android:text="Ballot Locations"
+            android:text="Ballot Location"
             android:layout_marginTop="@dimen/small_margin"
             android:gravity="center"
             style="@style/Button"/>
@@ -82,7 +81,7 @@
             android:layout_height="wrap_content"
             app:constraint_referenced_ids="state_correspondence_header,address" />
 
-        <!-- TODO: Add visual styling and content -->
+
         <TextView
             android:id="@+id/state_correspondence_header"
             android:layout_width="wrap_content"
@@ -92,14 +91,91 @@
             app:layout_constraintStart_toStartOf="parent"
             style="@style/HeaderTxtView"/>
 
-        <!-- TODO: Add data binding -->
+        <!-- address header -->
         <TextView
-            android:id="@+id/address"
+            android:id="@+id/address_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/state_correspondence_header"
-            app:layout_constraintStart_toStartOf="@id/election_date" />
-        <!-- TODO: Add button to save election to Room -->
+            app:layout_constraintStart_toStartOf="@id/election_date"
+            android:layout_marginTop="@dimen/big_margin"
+            android:layout_marginStart="@dimen/big_margin"
+            android:text="Address: "
+            android:textStyle="bold"/>
+        <!-- address text -->
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="275dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/state_correspondence_header"
+            app:layout_constraintStart_toEndOf="@id/address_header"
+            android:layout_marginTop="@dimen/big_margin"
+            android:layout_marginBottom="@dimen/big_margin"
+            android:text="@{viewModel.voterInfo.state[0].electionAdministrationBody.correspondenceAddress.line1}"
+            tools:text="Address"/>
+        <!-- city header -->
+        <TextView
+            android:id="@+id/city_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/big_margin"
+            android:text="City: "
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/election_date"
+            app:layout_constraintTop_toBottomOf="@+id/address" />
+        <!-- city text -->
+        <TextView
+            android:id="@+id/city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/address"
+            app:layout_constraintStart_toEndOf="@+id/city_header"
+            android:layout_marginTop="@dimen/small_margin"
+            android:text="@{viewModel.voterInfo.state[0].electionAdministrationBody.correspondenceAddress.city}"
+            tools:text="City"/>
+        <!-- state header -->
+        <TextView
+            android:id="@+id/state_header_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/city_header"
+            app:layout_constraintStart_toStartOf="@id/election_date"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginStart="@dimen/big_margin"
+            android:text="State: "
+            android:textStyle="bold"/>
+        <!-- state text -->
+        <TextView
+            android:id="@+id/state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/city"
+            app:layout_constraintStart_toEndOf="@+id/state_header_info"
+            android:layout_marginTop="@dimen/small_margin"
+            android:text="@{viewModel.voterInfo.state[0].electionAdministrationBody.correspondenceAddress.state}"
+            tools:text="State"/>
+        <!-- Zip code header -->
+        <TextView
+            android:id="@+id/zip_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/big_margin"
+            android:text="Zip: "
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/zip"
+            app:layout_constraintStart_toStartOf="@id/election_date"
+            app:layout_constraintTop_toBottomOf="@+id/state" />
+        <!-- Zip code No. -->
+        <TextView
+            android:id="@+id/zip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/state"
+            app:layout_constraintStart_toEndOf="@+id/zip_header"
+            android:layout_marginTop="@dimen/small_margin"
+            android:text="@{viewModel.voterInfo.state[0].electionAdministrationBody.correspondenceAddress.zip}"
+            tools:text="Zip"/>
+        <!-- Follow button -->
         <Button
             android:id="@+id/follow_election_button"
             android:layout_width="match_parent"

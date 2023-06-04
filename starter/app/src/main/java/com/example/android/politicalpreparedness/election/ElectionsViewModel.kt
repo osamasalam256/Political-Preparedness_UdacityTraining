@@ -1,6 +1,5 @@
 package com.example.android.politicalpreparedness.election
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +8,7 @@ import com.example.android.politicalpreparedness.database.ElectionDao
 import com.example.android.politicalpreparedness.network.CivicsApi
 import com.example.android.politicalpreparedness.network.models.Election
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.ArrayList
 
 //Construct ViewModel and provide election datasource
@@ -38,7 +38,7 @@ class ElectionsViewModel(dao: ElectionDao): ViewModel() {
                 upcomingElections.value = electionList.elections
             } catch (e: Exception) {
                 upcomingElections.value = ArrayList()
-                Log.i("API serveice", "couldn't get network data")
+                Timber.tag("API serveice").i(e.message)
             }
         }
     }
