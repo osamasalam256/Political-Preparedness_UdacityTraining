@@ -7,30 +7,42 @@ import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import com.example.android.politicalpreparedness.databinding.FragmentRepresentativeBinding
 import com.example.android.politicalpreparedness.network.models.Address
+import com.google.android.gms.location.FusedLocationProviderClient
 import java.util.Locale
 
 class DetailFragment : Fragment() {
 
     companion object {
         //TODO: Add Constant for Location request
+        private const val REQUEST_LOCATION_PERMISSION = 1
     }
 
     //TODO: Declare ViewModel
+    private lateinit var binding: FragmentRepresentativeBinding
+    private lateinit var viewModel: RepresentativeViewModel
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    override fun onCreateView(inflater: LayoutInflater,
+                              container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
 
-//    override fun onCreateView(inflater: LayoutInflater,
-//                              container: ViewGroup?,
-//                              savedInstanceState: Bundle?): View? {
-//
-//        //TODO: Establish bindings
-//
-//        //TODO: Define and assign Representative adapter
-//
-//        //TODO: Populate Representative adapter
-//
-//        //TODO: Establish button listeners for field and location search
-//
-//    }
+        viewModel = ViewModelProvider(this)[RepresentativeViewModel::class.java]
+
+        //TODO: Establish bindings
+        binding = FragmentRepresentativeBinding.inflate(inflater)
+
+        //TODO: Define and assign Representative adapter
+
+        //TODO: Populate Representative adapter
+
+        //TODO: Establish button listeners for field and location search
+
+
+        return binding.root
+
+    }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
