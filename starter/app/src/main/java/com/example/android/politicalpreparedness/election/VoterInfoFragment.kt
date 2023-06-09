@@ -14,12 +14,12 @@ import com.example.android.politicalpreparedness.database.ElectionDao
 
 import com.example.android.politicalpreparedness.database.ElectionDatabase
 import com.example.android.politicalpreparedness.databinding.FragmentVoterInfoBinding
+import com.example.android.politicalpreparedness.network.models.Election
 
 class VoterInfoFragment : Fragment() {
 
     private lateinit var viewModel: VoterInfoViewModel
     private lateinit var binding: FragmentVoterInfoBinding
-    private lateinit var dao: ElectionDao
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,12 +29,11 @@ class VoterInfoFragment : Fragment() {
 
         //  ViewModel values and create ViewModel
         val application = requireNotNull(this.activity).application
-        dao = ElectionDatabase.getInstance(application).electionDao
         val arg = VoterInfoFragmentArgs.fromBundle(requireArguments())
         val electionId = arg.argElectionId
         val division = arg.argDivision
 
-        val viewModelFactory = VoterInfoViewModelFactory(dao, electionId, division)
+        val viewModelFactory = VoterInfoViewModelFactory(application, electionId, division)
 
         viewModel = ViewModelProvider(this, viewModelFactory)[VoterInfoViewModel::class.java]
 
@@ -67,17 +66,27 @@ class VoterInfoFragment : Fragment() {
         viewModel.run {
             isElectionFollowed.observe(viewLifecycleOwner) {
                 when (it) {
-                    true -> binding.followElectionButton.text = getString(R.string.unfollow_button)
-
-                    false -> binding.followElectionButton.text = getString(R.string.follow_button)
-                    else -> return@observe
+                    true -> {
+                        binding.followElectionButton.text = getString(R.string.follow_button)
+                    }
+                    false -> {
+                        binding.followElectionButton.text = getString(R.string.unfollow_button)
+                    }
+                    else -> {}
                 }
             }
         }
+
         // save button clicks
-        binding.followElectionButton.setOnClickListener {
-            viewModel.followElection()
-        }
+//        binding.followElectionButton.setOnClickListener {
+//            viewModel.followElection()
+//        }
+//        viewModel.election.observe(viewLifecycleOwner) {
+//            if (it != null) {
+//                updateFollowButton(it)
+//            }
+//        }
+
 
         return binding.root
     }
@@ -87,5 +96,13 @@ class VoterInfoFragment : Fragment() {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(url)
         startActivity(intent)
+    }
+
+    private fun updateFollowButton(election: Election) {
+        var followElectionButtonText = getString(R.string.follow_election)
+        if (election.isSaved) {
+            followElectionButtonText = getString(R.string.unfollow_election)
+        }
+        binding.followElectionButton.text = followElectionButtonText
     }
 }

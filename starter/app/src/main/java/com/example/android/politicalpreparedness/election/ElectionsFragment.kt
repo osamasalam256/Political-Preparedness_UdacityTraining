@@ -18,17 +18,14 @@ class ElectionsFragment: Fragment() {
     private lateinit var binding: FragmentElectionBinding
     //  Declare ViewModel
     private lateinit var viewModel: ElectionsViewModel
-    // Declare DatabaseDao
-    private lateinit var dao: ElectionDao
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
 
         // ViewModel values and create ViewModel
         val application = requireNotNull(this.activity).application
-        dao = ElectionDatabase.getInstance(application).electionDao
 
-        val viewModelFactory = ElectionsViewModelFactory(dao)
+        val viewModelFactory = ElectionsViewModelFactory(application)
 
         viewModel = ViewModelProvider(this, viewModelFactory)[ElectionsViewModel::class.java]
 
@@ -82,7 +79,17 @@ class ElectionsFragment: Fragment() {
             }
 
         }
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            refreshData()
+        }
         return binding.root
+    }
+
+    private fun refreshData(){
+        viewModel.refreshElections()
+        viewModel.getElections()
+        viewModel.getSavedElections()
     }
 
 }
