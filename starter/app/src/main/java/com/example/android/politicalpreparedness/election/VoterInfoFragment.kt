@@ -27,6 +27,35 @@ class VoterInfoFragment : Fragment() {
         savedInstanceState: Bundle?)
     : View? {
 
+
+
+        // binding values
+        binding = FragmentVoterInfoBinding.inflate(inflater)
+
+
+
+        /**
+        Hint: You will need to ensure proper data is provided from previous fragment.
+        */
+
+
+        // save button clicks
+//        binding.followElectionButton.setOnClickListener {
+//            viewModel.followElection()
+//        }
+//        viewModel.election.observe(viewLifecycleOwner) {
+//            if (it != null) {
+//                updateFollowButton(it)
+//            }
+//        }
+
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         //  ViewModel values and create ViewModel
         val application = requireNotNull(this.activity).application
         val arg = VoterInfoFragmentArgs.fromBundle(requireArguments())
@@ -37,17 +66,8 @@ class VoterInfoFragment : Fragment() {
 
         viewModel = ViewModelProvider(this, viewModelFactory)[VoterInfoViewModel::class.java]
 
-
-        // binding values
-        binding = FragmentVoterInfoBinding.inflate(inflater)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-
-
-        /**
-        Hint: You will need to ensure proper data is provided from previous fragment.
-        */
-
         // Handle loading of URLs
         viewModel.ballotInformationUrl.observe(viewLifecycleOwner) {
             it?.let {
@@ -77,18 +97,6 @@ class VoterInfoFragment : Fragment() {
             }
         }
 
-        // save button clicks
-//        binding.followElectionButton.setOnClickListener {
-//            viewModel.followElection()
-//        }
-//        viewModel.election.observe(viewLifecycleOwner) {
-//            if (it != null) {
-//                updateFollowButton(it)
-//            }
-//        }
-
-
-        return binding.root
     }
 
     // method to load URL intents

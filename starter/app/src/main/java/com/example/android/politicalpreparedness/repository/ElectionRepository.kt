@@ -21,7 +21,8 @@ class ElectionRepository(private val electionDatabase: ElectionDatabase) {
     suspend fun getVoterInfo(electionId: Int, address: String): VoterInfoResponse? {
         var voterInfo: VoterInfoResponse?
         withContext(Dispatchers.IO) {
-            val voterInfoResponse: VoterInfoResponse = CivicsApi.retrofitService.getVoterInfo(address, electionId)
+            val voterInfoResponse: VoterInfoResponse =
+                CivicsApi.retrofitService.getVoterInfo(electionId, address)
 
             voterInfo = voterInfoResponse
         }
@@ -29,7 +30,6 @@ class ElectionRepository(private val electionDatabase: ElectionDatabase) {
     }
     suspend fun updateIsSaved(election: Election){
     withContext(Dispatchers.IO){
-
             electionDatabase.electionDao.updateIsSaved(election.id, true )
         }
     }
