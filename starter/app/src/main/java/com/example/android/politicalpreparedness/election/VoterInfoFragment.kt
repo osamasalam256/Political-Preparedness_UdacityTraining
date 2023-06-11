@@ -27,27 +27,8 @@ class VoterInfoFragment : Fragment() {
         savedInstanceState: Bundle?)
     : View? {
 
-
-
         // binding values
         binding = FragmentVoterInfoBinding.inflate(inflater)
-
-
-
-        /**
-        Hint: You will need to ensure proper data is provided from previous fragment.
-        */
-
-
-        // save button clicks
-//        binding.followElectionButton.setOnClickListener {
-//            viewModel.followElection()
-//        }
-//        viewModel.election.observe(viewLifecycleOwner) {
-//            if (it != null) {
-//                updateFollowButton(it)
-//            }
-//        }
 
 
         return binding.root
@@ -86,10 +67,10 @@ class VoterInfoFragment : Fragment() {
         viewModel.run {
             isElectionFollowed.observe(viewLifecycleOwner) {
                 when (it) {
-                    true -> {
+                    false -> {
                         binding.followElectionButton.text = getString(R.string.follow_button)
                     }
-                    false -> {
+                    true -> {
                         binding.followElectionButton.text = getString(R.string.unfollow_button)
                     }
                     else -> {}
@@ -106,11 +87,4 @@ class VoterInfoFragment : Fragment() {
         startActivity(intent)
     }
 
-    private fun updateFollowButton(election: Election) {
-        var followElectionButtonText = getString(R.string.follow_election)
-        if (election.isSaved) {
-            followElectionButtonText = getString(R.string.unfollow_election)
-        }
-        binding.followElectionButton.text = followElectionButtonText
-    }
 }

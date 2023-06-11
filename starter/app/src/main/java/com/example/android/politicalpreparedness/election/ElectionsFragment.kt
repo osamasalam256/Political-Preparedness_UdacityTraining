@@ -22,20 +22,31 @@ class ElectionsFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
 
+
+
+        // binding values
+        binding = FragmentElectionBinding.inflate(inflater)
+
+
+//        binding.swipeRefreshLayout.setOnRefreshListener {
+//            refreshData()
+//        }
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         // ViewModel values and create ViewModel
         val application = requireNotNull(this.activity).application
 
         val viewModelFactory = ElectionsViewModelFactory(application)
 
         viewModel = ViewModelProvider(this, viewModelFactory)[ElectionsViewModel::class.java]
-
-        // binding values
-        binding = FragmentElectionBinding.inflate(inflater)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
 
-         //Upcoming Elections
+        //Upcoming Elections
 
         val upcomingElectionsAdapter = ElectionListAdapter(ElectionListener { election ->
             election.let {
@@ -52,7 +63,7 @@ class ElectionsFragment: Fragment() {
         }
 
 
-         // Saved Elections
+        // Saved Elections
 
         val savedElectionsAdapter = ElectionListAdapter(ElectionListener { election ->
             viewModel.onElectionClicked(election)
@@ -79,17 +90,11 @@ class ElectionsFragment: Fragment() {
             }
 
         }
-
-        binding.swipeRefreshLayout.setOnRefreshListener {
-            refreshData()
-        }
-        return binding.root
     }
-
-    private fun refreshData(){
-        viewModel.refreshElections()
-        viewModel.getElections()
-        viewModel.getSavedElections()
-    }
+//    private fun refreshData(){
+//        viewModel.refreshElections()
+//        viewModel.getElections()
+//        viewModel.getSavedElections()
+//    }
 
 }

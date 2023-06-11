@@ -1,21 +1,22 @@
 package com.example.android.politicalpreparedness.election
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.android.politicalpreparedness.database.ElectionDao
+
 import com.example.android.politicalpreparedness.database.ElectionDatabase
-import com.example.android.politicalpreparedness.network.CivicsApi
+
 import com.example.android.politicalpreparedness.network.models.Division
 import com.example.android.politicalpreparedness.network.models.Election
 import com.example.android.politicalpreparedness.network.models.VoterInfoResponse
 import com.example.android.politicalpreparedness.repository.ElectionRepository
 import kotlinx.coroutines.Dispatchers
+
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 class VoterInfoViewModel(application: Application, electionId: Int, division: Division) : ViewModel() {
     private val dataSource = ElectionDatabase.getInstance(application)
@@ -52,9 +53,14 @@ class VoterInfoViewModel(application: Application, electionId: Int, division: Di
     private fun getVoteInfo(electionId: Int, division: Division) {
         viewModelScope.launch {
                 val election = dataSource.electionDao.getElectionById(electionId)
-                _isElectionFollowed.value = election != null && election.isSaved == false
-                val address = division.state + ", " + division.country
+
+                _isElectionFollowed.value = election != null && election.isSaved == true
+            val address = division.state + ", " + division.country
+            try {
                 _voterInfo.value = electionRepository.getVoterInfo(electionId, address)
+            } catch (e: Exception) {
+                Log.e("VoterInfoVM", "exception thrown: ${e.localizedMessage}")
+            }
                 _election.value = _voterInfo.value?.election
         }
     }
@@ -84,19 +90,19 @@ class VoterInfoViewModel(application: Application, electionId: Int, division: Di
 
     fun followElection() {
         viewModelScope.launch {
-            if (_isElectionFollowed.value == true) {
+            if (_isElectionFollowed.value == false) {
                 _election.value?.let {
                     updateElectionInDatabase()
                     dataSource.electionDao.updateIsSaved(it.id, true)
                 }
-                _isElectionFollowed.value = false
+                _isElectionFollowed.value = true
             } else {
                 viewModelScope.launch(Dispatchers.IO) {
                     _election.value?.let {
-                        dataSource.electionDao.delete(it)
+                        dataSource.electionDao.updateIsSaved(it.id, false)
                     }
                 }
-                _isElectionFollowed.value = true
+                _isElectionFollowed.value = false
             }
         }
     }

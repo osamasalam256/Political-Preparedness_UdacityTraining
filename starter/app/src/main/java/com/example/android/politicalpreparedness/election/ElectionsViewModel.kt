@@ -36,7 +36,7 @@ class ElectionsViewModel(application: Application): ViewModel() {
         getSavedElections()
     }
 
-    fun getElections() {
+    private fun getElections() {
         viewModelScope.launch {
             database.electionDao.getAllElections().collect(){
                  upcomingElections.value = it
@@ -44,21 +44,21 @@ class ElectionsViewModel(application: Application): ViewModel() {
         }
     }
 
-    fun getSavedElections() {
+    private fun getSavedElections() {
         viewModelScope.launch {
             database.electionDao.getSavedElections().collect(){
                 savedElections.value = it
             }
         }
     }
-    fun refreshElections(){
+    private fun refreshElections(){
         viewModelScope.launch {
-            try {
-                electionRepository.refreshElections()
-            } catch (e: Exception) {
-                //upcomingElections.value = ArrayList()
-                Timber.tag("API serveice").i(e.message)
-            }
+                try {
+                    electionRepository.refreshElections()
+                } catch (e: Exception) {
+                    //upcomingElections.value = ArrayList()
+                    Timber.tag("API serveice").i(e.message)
+                }
         }
     }
     // Functions to navigate to saved or upcoming election voter info
