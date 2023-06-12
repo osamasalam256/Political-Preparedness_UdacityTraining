@@ -1,12 +1,14 @@
 package com.example.android.politicalpreparedness.representative
 
 import android.Manifest
+import android.annotation.SuppressLint
 
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
+import android.os.Looper
 
 import android.view.*
 import android.view.inputmethod.InputMethodManager
@@ -22,10 +24,7 @@ import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.databinding.FragmentRepresentativeBinding
 import com.example.android.politicalpreparedness.network.models.Address
 import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListAdapter
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import java.util.Locale
 
 @Suppress("DEPRECATION", "DEPRECATED_IDENTITY_EQUALS")
@@ -42,6 +41,7 @@ class DetailFragment : Fragment() {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
     private lateinit var locationRequest: LocationRequest
+    private var isLocationUpdatesEnabled = false
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -140,7 +140,14 @@ class DetailFragment : Fragment() {
                         viewModel.getAddressFromLocation(geoLocation)
                     }
                 }
-           // startLocationUpdates()
+                .addOnFailureListener { exception ->
+                    Toast.makeText(
+                        requireContext(),
+                        "Failed to get location: ${exception.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+           startLocationUpdates()
         } else {
             requestPermissions(
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
@@ -177,28 +184,61 @@ class DetailFragment : Fragment() {
         )
     }
 
+override fun onResume() {
+    super.onResume()
+    setupLocationClientAndCallback()
+    if (isPermissionGranted() && isLocationUpdatesEnabled) {
+        startLocationUpdates()
+    }
+}
 
-//    override fun onResume() {
-//        super.onResume()
-//        if (isPermissionGranted() ) {
-//            startLocationUpdates()
-//        }
-//    }
-//
-//    override fun onPause() {
-//        super.onPause()
-//        stopLocationUpdates()
-//    }
-//
-//    @SuppressLint("MissingPermission")
-//    private fun startLocationUpdates() {
-//        fusedLocationProviderClient.requestLocationUpdates(locationRequest,
-//            locationCallback,
-//            Looper.getMainLooper())
-//    }
-//
-//    private fun stopLocationUpdates() {
-//        fusedLocationProviderClient.removeLocationUpdates(locationCallback)
-//    }
+    override fun onPause() {
+        super.onPause()
+        stopLocationUpdates()
+    }
 
+    private fun setupLocationClientAndCallback() {
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        locationRequest = LocationRequest.create().apply {
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                locationResult?.let {
+                    for (location in it.locations) {
+                        getAddressFromLocation(location)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getAddressFromLocation(location: Location?) {
+        location?.let {
+            val address = geoCodeLocation(it)
+            viewModel.getAddressFromLocation(address)
+        } ?: Toast.makeText(requireContext(), "Location must be in the US", Toast.LENGTH_LONG).show()
+    }
+@SuppressLint("MissingPermission")
+private fun startLocationUpdates() {
+    if (isPermissionGranted()) {
+        fusedLocationProviderClient.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            Looper.getMainLooper()
+        )
+        isLocationUpdatesEnabled = true
+    } else {
+        requestPermissions(
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+            REQUEST_LOCATION_PERMISSION
+        )
+    }
+}
+
+    private fun stopLocationUpdates() {
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+        isLocationUpdatesEnabled = false
+    }
 }
