@@ -31,12 +31,13 @@ class ElectionsViewModel(application: Application): ViewModel() {
         get() = _navigateToElection
 
     init {
-        refreshElections()
         getElections()
         getSavedElections()
+        refreshElections()
+
     }
 
-    private fun getElections() {
+    fun getElections() {
         viewModelScope.launch {
             database.electionDao.getAllElections().collect(){
                  upcomingElections.value = it
@@ -44,20 +45,21 @@ class ElectionsViewModel(application: Application): ViewModel() {
         }
     }
 
-    private fun getSavedElections() {
+    fun getSavedElections() {
         viewModelScope.launch {
             database.electionDao.getSavedElections().collect(){
                 savedElections.value = it
             }
         }
     }
-    private fun refreshElections(){
+    fun refreshElections(){
         viewModelScope.launch {
                 try {
-                    electionRepository.refreshElections()
+                    val elections = upcomingElections.value!!
+                    electionRepository.refreshElections(elections)
                 } catch (e: Exception) {
                     //upcomingElections.value = ArrayList()
-                    Timber.tag("API serveice").i(e.message)
+                    Timber.tag("API service").i("no network data")
                 }
         }
     }

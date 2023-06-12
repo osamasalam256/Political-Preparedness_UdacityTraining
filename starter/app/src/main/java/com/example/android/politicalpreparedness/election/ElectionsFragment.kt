@@ -13,6 +13,7 @@ import com.example.android.politicalpreparedness.database.ElectionDatabase
 import com.example.android.politicalpreparedness.databinding.FragmentElectionBinding
 import com.example.android.politicalpreparedness.election.adapter.ElectionListAdapter
 import com.example.android.politicalpreparedness.election.adapter.ElectionListener
+import kotlin.concurrent.thread
 
 class ElectionsFragment: Fragment() {
     private lateinit var binding: FragmentElectionBinding
@@ -90,11 +91,18 @@ class ElectionsFragment: Fragment() {
             }
 
         }
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            refreshData()
+        }
     }
-//    private fun refreshData(){
-//        viewModel.refreshElections()
-//        viewModel.getElections()
-//        viewModel.getSavedElections()
-//    }
+    private fun refreshData(){
+
+        viewModel.getElections()
+        viewModel.getSavedElections()
+        viewModel.refreshElections()
+        Thread.sleep(200)
+        binding.swipeRefreshLayout.isRefreshing = false
+    }
 
 }

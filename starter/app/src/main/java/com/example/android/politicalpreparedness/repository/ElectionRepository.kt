@@ -14,20 +14,27 @@ class ElectionRepository(private val electionDatabase: ElectionDatabase) {
 
 
     @SuppressLint("SuspiciousIndentation")
-    suspend fun refreshElections() {
+    suspend fun refreshElections(elections: List<Election>) {
         deletePastUnsavedElections()
-        val elections: List<Election>
+        val newElections: List<Election>
         withContext(Dispatchers.IO) {
-            val electionResponse = CivicsApi.retrofitService.getElections()
-            elections = electionResponse.elections
-            elections.forEach { election ->
-               val savedElection = electionDatabase.electionDao.getElectionById(election.id)
-                    if (election.id == savedElection.id){
-                         election.isSaved = savedElection.isSaved
+            if (elections.isEmpty()){
+
+                val electionResponse = CivicsApi.retrofitService.getElections()
+                newElections = electionResponse.elections
+                electionDatabase.electionDao.insertAllElections(newElections)
+            }else {
+                val electionResponse = CivicsApi.retrofitService.getElections()
+                newElections = electionResponse.elections
+                newElections.forEach { election ->
+                    val savedElection = electionDatabase.electionDao.getElectionById(election.id)
+                    if (election.id == savedElection.id) {
+                        election.isSaved = savedElection.isSaved
                     }
+                }
+                electionDatabase.electionDao.insertAllElections(newElections)
             }
         }
-            electionDatabase.electionDao.insertAllElections(elections)
     }
 
 
