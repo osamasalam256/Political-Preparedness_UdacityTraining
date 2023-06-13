@@ -29,6 +29,9 @@
 
     <string name="voter_info_error">Unfortunately, details for this election are unavailable. Please choose a different election</string>
     <string name="hint_Vote_Info_date">12 November 2055</string>
+    <string name="ballot_location">Ballot location</string>
+    <string name="address">Address</string>
+    <string name="state">State</string>
 
 
 </resources>

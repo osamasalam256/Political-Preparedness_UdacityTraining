@@ -9,22 +9,24 @@
         tools:context="com.example.android.politicalpreparedness.MainActivity">
 
         <!-- image for home screen logo. -->
+        <!-- Button to navigate to upcoming elections. -->
         <ImageView
             android:id="@+id/election_logo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/ballot_logo"
-            app:layout_constraintBottom_toTopOf="@id/upcoming_button"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_margin="@dimen/big_margin"
-            android:foregroundGravity="center"/>
-        <!-- Button to navigate to upcoming elections. -->
+            android:background="@drawable/ballot_logo"
+            android:foregroundGravity="center"
+            app:layout_constraintBottom_toTopOf="@id/upcoming_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.449" />
+
         <Button
             android:id="@+id/upcoming_button"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             app:layout_constraintBottom_toTopOf="@+id/representatives_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -35,7 +37,7 @@
         <Button
             android:id="@+id/representatives_button"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
