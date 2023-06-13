@@ -160,11 +160,11 @@ class DetailFragment : Fragment() {
         val geocoder = Geocoder(requireContext(), Locale.getDefault())
         return geocoder.getFromLocation(location.latitude, location.longitude, 1)!!
             .map { address ->
-                Address(address.thoroughfare,
-                    address.subThoroughfare,
-                    address.locality,
-                    address.adminArea,
-                    address.postalCode)
+                Address(address?.thoroughfare.toString(),
+                    address?.subThoroughfare.toString(),
+                    address?.locality.toString(),
+                    address?.adminArea.toString(),
+                    address?.postalCode.toString())
             }
             .first()
     }
