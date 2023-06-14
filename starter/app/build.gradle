@@ -74,6 +74,7 @@ dependencies {
     // Room
     implementation "androidx.room:room-ktx:$version_room"
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation 'androidx.fragment:fragment:1.5.7'
     kapt "androidx.room:room-compiler:$version_room"
 
     // Location

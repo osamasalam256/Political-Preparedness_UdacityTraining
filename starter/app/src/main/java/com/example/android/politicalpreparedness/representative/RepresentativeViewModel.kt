@@ -1,5 +1,6 @@
 package com.example.android.politicalpreparedness.representative
 
+import android.os.Parcelable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,15 +21,23 @@ class RepresentativeViewModel: ViewModel() {
     val representatives: LiveData<List<Representative>?>
         get() = _representatives
 
+    private val _representativeListState = MutableLiveData<Parcelable?>()
+    val representativeListState: LiveData<Parcelable?>
+        get() = _representativeListState
+
+    private val _motionLayoutProgress = MutableLiveData<Float>()
+    val motionLayoutProgress: LiveData<Float>
+        get() = _motionLayoutProgress
+
     private val _address = MutableLiveData<Address>()
     val address: LiveData<Address>
         get() = _address
 
     init {
         _address.value = Address("", "", "", "", "")
-
+        _representativeListState.value = null
     }
-    //TODO: Create function to fetch representatives from API from a provided address
+    // to fetch representatives from API from a provided address
 
     fun fetchRepresentatives() {
         viewModelScope.launch {
@@ -44,6 +53,13 @@ class RepresentativeViewModel: ViewModel() {
         }
     }
 
+    fun saveRepresentativeListState(state: Parcelable?) {
+        _representativeListState.value = state
+    }
+
+    fun saveMotionLayoutProgress(progress: Float) {
+        _motionLayoutProgress.value = progress
+    }
 
     // function get address from geo location
     fun getAddressFromLocation(address: Address) {

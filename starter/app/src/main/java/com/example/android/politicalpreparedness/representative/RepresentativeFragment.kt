@@ -46,17 +46,22 @@ class DetailFragment : Fragment() {
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        viewModel = ViewModelProvider(this)[RepresentativeViewModel::class.java]
-
         //Establish bindings
         binding = FragmentRepresentativeBinding.inflate(inflater)
+        return binding.root
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel = ViewModelProvider(this)[RepresentativeViewModel::class.java]
+
 
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-
 
         binding.buttonSearch.setOnClickListener {
             viewModel.getAddressFromLocation(addressTextToObject())
@@ -89,8 +94,15 @@ class DetailFragment : Fragment() {
             binding.state.adapter = adapter
         }
 
-        return binding.root
+        // Observe the motionLayoutProgress
+        viewModel.motionLayoutProgress.observe(viewLifecycleOwner) { progress ->
+            binding.motionLayout.progress = progress
+        }
 
+        // Observe the representativeListState
+        viewModel.representativeListState.observe(viewLifecycleOwner) { state ->
+            binding.representativeList.layoutManager?.onRestoreInstanceState(state)
+        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -195,6 +207,14 @@ override fun onResume() {
     override fun onPause() {
         super.onPause()
         stopLocationUpdates()
+        // Save the state when the fragment is paused
+        val layoutManager = binding.representativeList.layoutManager
+        val recycleViewState = layoutManager?.onSaveInstanceState()
+        viewModel.saveRepresentativeListState(recycleViewState)
+
+        // Save the state when the fragment is paused
+        val progress = binding.motionLayout.progress
+        viewModel.saveMotionLayoutProgress(progress)
     }
 
     private fun setupLocationClientAndCallback() {

@@ -32,6 +32,11 @@
     <string name="ballot_location">Ballot location</string>
     <string name="address">Address</string>
     <string name="state">State</string>
+    <string name="election_logo">Election Logo</string>
+    <string name="representative_photo">Representative photo</string>
+    <string name="twitter_icon">Twitter Icon</string>
+    <string name="faceBook_icon">Facebook Icon</string>
+    <string name="website_icon">webSite Icon</string>
 
 
 </resources>

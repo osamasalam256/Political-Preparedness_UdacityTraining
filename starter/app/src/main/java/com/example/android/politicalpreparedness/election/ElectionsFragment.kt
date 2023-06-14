@@ -5,15 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.android.politicalpreparedness.database.ElectionDao
-import com.example.android.politicalpreparedness.database.ElectionDatabase
 import com.example.android.politicalpreparedness.databinding.FragmentElectionBinding
 import com.example.android.politicalpreparedness.election.adapter.ElectionListAdapter
 import com.example.android.politicalpreparedness.election.adapter.ElectionListener
-import kotlin.concurrent.thread
 
 class ElectionsFragment: Fragment() {
     private lateinit var binding: FragmentElectionBinding
@@ -21,17 +18,10 @@ class ElectionsFragment: Fragment() {
     private lateinit var viewModel: ElectionsViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?): View? {
-
-
-
+        savedInstanceState: Bundle?): View {
         // binding values
         binding = FragmentElectionBinding.inflate(inflater)
 
-
-//        binding.swipeRefreshLayout.setOnRefreshListener {
-//            refreshData()
-//        }
         return binding.root
     }
 

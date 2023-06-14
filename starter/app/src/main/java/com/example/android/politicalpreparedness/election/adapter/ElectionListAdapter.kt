@@ -27,10 +27,12 @@ class ElectionListAdapter(private val clickListener: ElectionListener)
 //ElectionViewHolder
 class ElectionViewHolder(private var binding: ViewItemElectionBinding) :
     RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: Election, clickListener: ElectionListener) {
-        binding.electionModel = item
-        binding.clickListener = clickListener
-        binding.executePendingBindings()
+    fun bind(item: Election, ClickListener: ElectionListener) {
+        with(binding){
+            electionModel = item
+            clickListener = ClickListener
+            executePendingBindings()
+        }
     }
 
     //Add companion object to inflate ViewHolder (from)

@@ -21,29 +21,32 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.449" />
+            app:layout_constraintVertical_bias="0.449"
+            android:contentDescription="@string/election_logo" />
 
         <Button
             android:id="@+id/upcoming_button"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/buttonHight50"
             app:layout_constraintBottom_toTopOf="@+id/representatives_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:text="@string/upcoming_button"
 
-            style="@style/Button" />
+            style="@style/Button"
+            tools:ignore="VisualLintButtonSize" />
         <!-- Button to navigate to representatives. -->
         <Button
             android:id="@+id/representatives_button"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/buttonHight50"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginBottom="@dimen/small_margin"
             android:text="@string/representatives_button"
-            style="@style/Button"/>
+            style="@style/Button"
+            tools:ignore="VisualLintButtonSize" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
